@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
     <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="./tools/log.js"></script>
+    <script src="./tools/user.js"></script>
 
 </head>
 
@@ -22,43 +24,45 @@
         <div class="container-fluid common_con">
             <form class="form-horizontal article_form">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">用户名称：</label>
+                    <label for="username" class="col-sm-2 control-label">用户名称：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail3" value="李思思">
+                        <input type="text" class="form-control" id="username" name="username"  value="李思思">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">昵称：</label>
+                    <label for="nickname" class="col-sm-2 control-label">昵称：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail3" value="思思">
+                        <input type="text" class="form-control" name='nickname' id="nickname" value="思思">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">邮箱：</label>
+                    <label for="email" class="col-sm-2 control-label">邮箱：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail3" value="lisisi@126.com">
+                        <input type="text" class="form-control" name='email' id="email" value="lisisi@126.com">
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="inputPassword3" class="col-sm-2 control-label">用户图标：</label>
+                    <label for="user_pic" class="col-sm-2 control-label">用户图标：</label>
                     <div class="col-sm-10">
-                        <img src="images/2.jpg" alt="" class="user_pic">
-                        <input type="file" id="exampleInputFile">
+                        <img src="images/2.jpg" alt="" class="user_pic" id="touxiang">
+                        <input type="file" id="user_pic" name="user_pic">
                     </div>
                 </div>
 
                 <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">密码：</label>
+                        <label for="password" class="col-sm-2 control-label">密码：</label>
                         <div class="col-sm-4">
-                            <input type="password" class="form-control" id="inputEmail3" value="12345678">
+                            <input type="password" class="form-control" id="password" name="password" value="12345678">
                         </div>
                     </div>
                
     
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success">修改</button>
+                        <!-- <button type="submit" class="btn btn-success">修改</button> -->
+                        <button type="button" id="btn" class="btn btn-success">修改</button>
+
                     </div>
                 </div>
             </form>
@@ -66,5 +70,53 @@
     </div>
 
 </body>
+<script>
+// 1.获取用户信息
+user.userInfoGet({
+    success: function(res){
+        $.each(res.data, function (i,val) {
+            if (i=='user_pic') {
+                $('#touxiang').prop('src',val);
+                return;
+            }
+            $("#"+i).val(val);
+        })
+    }
+})
+// 2.编辑用户信息
+$('#btn').on('click', function () {
+    if (
+        $('#username').val().trim()==''||
+        $('#nickname').val().trim()==''||
+        $('#email').val().trim()==''||
+        $('#password').val().trim()==''||
+        $('#user_pic')[0]==''
+    ) {
+        alert('请完整填写表单内容');
+        return;
+    }
+    var fd=new FormData($('form')[0]);
+    user.userInfoEdit({
+        data:fd,
+        success: function (res) {
+            parent.location.href='./index.html'
+        }
+    })
+
+
+})
+$("#user_pic").on('change', function () {
+    console.log(URL.createObjectURL($(this)[0].files[0]));
+    
+    var tempSrc=URL.createObjectURL($(this)[0].files[0]);
+    $('#touxiang').prop('src',tempSrc)
+})
+
+
+
+
+
+
+</script>
 
 </html>

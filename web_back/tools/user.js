@@ -32,12 +32,37 @@ var user={
     },
     getUser: function (options) {
         $.ajax({
-            url:'http://localhost:8000/admin/getuser',
+            url:GETUSER,
             success: function (res) {
                 if (res.code==200) {
                    options.success(res)
                 }
             }
         })
+    },
+    userInfoGet: function (options) {
+        $.ajax({
+            url:USERINFO_GET,
+            success: function(res){
+             if (res.code==200) {
+                 options.success(res)
+             }
+            } 
+         }) 
+    },
+    userInfoEdit: function (options) {
+        $.ajax({
+            type:'post',
+            url:USERINFOEDIT,
+            data:options.data,
+            contentType:false,
+            processData:false,
+            success: function (res) {
+                if (res.code==200) {
+                    options.success(res)
+                }
+            }
+        })
     }
+   
 }
