@@ -72,6 +72,13 @@
            })
             
         })
+        user.getUser({
+            success: function (res) {
+                $('.user_info img,.user_center_link img').prop('src',res.data.user_pic);
+                $('.user_info span').text('欢迎 '+res.data.nickname)
+            }
+        })
+        
 
 
 
@@ -123,6 +130,7 @@
               $('.level02').children().eq(n).addClass('active').siblings().removeClass('active');
            }
         }
+       
 
     </script>
 

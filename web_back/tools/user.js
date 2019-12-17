@@ -29,5 +29,15 @@ var user={
                 }
             }
         })
+    },
+    getUser: function (options) {
+        $.ajax({
+            url:'http://localhost:8000/admin/getuser',
+            success: function (res) {
+                if (res.code==200) {
+                   options.success(res)
+                }
+            }
+        })
     }
 }
